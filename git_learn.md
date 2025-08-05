@@ -14,4 +14,14 @@ gitconfig 文件：包含系统上每一个用户及他们仓库的通用配置�
 .gitconfig 文件: 只针对当前用户。 传递 --global 选项让git读写此文件,这会对你系统上的所有仓库生效。
 --local > --global > --system优先级从大到小.gitconfig 会覆盖gitconfig中的配置变量
 
-查看所有配置以及它们所在的文件用命令
+查看所有配置以及它们所在的文件用命令 <br>
+`git config --list --show-origin`
+#### 用户信息 
+安装完Git之后，第一件是配置好自己的用户名和邮件地址，否则git不知道你是谁，没法执行提交(commit)
+
+配置整个系统的用--global选项，只作用当前仓库用--local选项也可以不带任何选项，命令如下：
+`git config --global user.name "Tianuy"`<br>
+`git config --global user.email "Tianuy-git@outlook.com"`
+
+如果使用了--global选项，那么该命令只需要运行一次，以后你在该系统上做任何事，都会使用这些信息，如果要针对特定的项目使用不同的用户名和邮件地址时，可以运行不带--global选项的命令来配置。
+
