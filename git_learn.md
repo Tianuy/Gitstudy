@@ -264,3 +264,36 @@ Git 的分支实质上仅是包含所指对象校验和（长度为 40 的 SHA-1
 （40 个字符和 1 个换行符）
 #### 分支的新建与合并
 使用 `git merge` 命令进行合并
+快进(fast-forward),当你合并的仓库是被合并仓库的父仓库，两者之间是没有需要解决的分歧的，这就叫快进。只会简单的将指针向前推进（指针右移）。
+典型合并的图示如下：
+![一次典型合并中所用到的三个快照](img/6.jpg)
+Git 会使用两个分支的末端所指的快照(C4 和 C5)以及这两个分支的公共祖先(C2)，做一个简单的三方合并。
+![一个合并提交](img/7.jpg) 
+Git 将此次三方合并的结果做了一个新的快照并且自动创建一个新的提
+交指向它。 这个被称作一次合并提交，它的特别之处在于他有不止一个父提交。
+
+##### 遇到冲突时的分支合并
+假设两个分支同一个文件的同一部分进行了不同的修改，Git就没法干净的合并它们。Git 做了合并，但是没有自动地创建一个新的合并提交。 Git 会暂停下来，等待你去解决合并产生的冲突。在合并冲突后的任意时刻使用 git status 命令来查看那些因包含合并冲突而处于未合并
+(unmerged)状态的文件,假如显示:
+```
+$ git status
+On branch master
+You have unmerged paths.
+(fix conflicts and run "git commit")
+Unmerged paths:
+(use "git add <file>..." to mark resolution)
+both modified: index.html
+no changes added to commit (use "git add" and/or "git commit -a")
+任何因包含合并冲突而有待解决的文件，都会以未合并状态标识出来。 Git 会在有冲突的文件中加入标准的冲突解决标记，这样你可以打开这些包含冲突的文件然后手动解决冲突。
+```
+<<<<<<< HEAD:index.html
+<div id="footer">contact : email.support@github.com</div>
+=======
+<div id="footer">
+please contact us at support@github.com
+</div>
+>>>>>>> iss53:index.html
+```
+
+#### 删除分支
+可以使用带`-d`选项的`git branch`命令来删除分支。当合并好了之后，应该及时清除多余分支。
