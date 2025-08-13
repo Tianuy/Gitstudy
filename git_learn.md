@@ -353,4 +353,39 @@ C5 和 C6 提交），然后把另外两个分支合并入主干分支。 最终
 
 本地不会自动生成一份可编辑的副本。 拉取下来的数据不会自动合并到你的工作目录，需要手动合并。
  可以运行`git merge <remote>/<remote_branch>`，如果想要在自己的本地分支上工作，可以将其建立在远程跟踪分支之上：
- `git checkout -b <local_branch> <remote>/<remote_branch>`
+ `git checkout -b <local_branch> <remote>/<remote_branch>`这会给你一个用于工作的本地分支，并且起点位于`<remote>/<remote_branch>`这是一个十分常用的操作所以 Git 提供了 --track 快捷方式：
+ `git checkout --track <remote>/<remote_branch>`这会创建一个与远程分支同名的跟踪分支，本身还有一个捷径`git checkout <remote_branch>`如果你尝试检出的本地分支不存在，且远程只有一个名字与之匹配的分支，Git就会创建一个跟踪分支。
+ 
+ ##### 跟踪分支
+ 从一个远程跟踪分支检出一个本地分支会自动创建所谓的“跟踪分支”(它跟踪的分支叫做“上游分支”)。跟踪分支是与远程分支有直接关系的本地分支。如果在一个跟踪分支上输入 git pull，Git 能自动地识别去哪
+个服务器上抓取、合并到哪个分支。
+<br>
+设置已有的本地分支跟踪一个刚刚拉取下来的远程分支，或者想要修改正在跟踪的上游分支,你可以在任意时间使用`-u`或`--set-upstream-to` 选项运行 `git branch` 来显式地设置。
+
+`-u`用来显示跟踪指定的远程分支的本地分支，`--set-upstream-to`将把当前所在分支指定为指定远程分支的跟踪分支。
+
+##### 上游快捷方式
+当设置好跟踪分支后，可以通过简写 `@{upstream}` 或 `@{u}`来引用它的上游分支。 所以在
+master 分支时并且它正在跟踪 origin/master 时，如果愿意的话可以使用 `git merge @{u}` 来取代 `git merge origin/master`。
+想要查看设置的所有跟踪分支，可以使用 `git branch` 的 `-vv `选项
+这会将所有的本地分支列出来并且包
+含更多的信息。如：
+```
+$ git branch -vv
+iss53 7e424c3 [origin/iss53: ahead 2] forgot the brackets
+master 1ae2a45 [origin/master] deploying index fix
+* serverfix f8674d9 [teamone/server-fix-good: ahead 3, behind 1] this
+should do it
+testing 5ea463a trying something new
+```  
+这里可以看到 iss53 分支正在跟踪 origin/iss53 并且 “ahead” 是 2，意味着本地有两个提交还没有推送
+到服务器上。 也能看到 master 分支正在跟踪 origin/master 分支并且是最新的。serverfix 分支正在跟踪 teamone 服务器上的 server-fix-good 分支并且领先 3 落后 1， 意味着服务器上有一次提交还没有合并入同时本地有三次提交还没有推送。 最后看到 testing 分支并没有跟踪任何远程分支。<br>
+需要重点注意的一点是这些数字的值来自于你从每个服务器上最后一次抓取的数据。 这个命令并没有连接服务
+器，它只会告诉你关于本地缓存的服务器数据。  
+
+***命令行和C语言一样以;结尾可以将几句同时放在同一行。***
+
+##### 删除远程分支
+假设你已经通过远程分支做完所有的工作了——也就是说你和你的协作者已经完成了一个特性， 并且将其合并
+到了远程仓库的 master 分支（或任何其他稳定代码分支）。 可以运行带有 `--delete` 选项的`git push`命令来删除一个远程分支。 如果想要从服务器上删除 serverfix 分支，运行下面的命令：
+`git push oringin --delete serverfix`基本上这个命令做的只是从服务器上移除这个指针。 Git 服务器通常会保留数据一段时间直到垃圾回收运行，所以如果不小心删除掉了，通常是很容易恢复的。
