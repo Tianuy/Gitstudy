@@ -191,7 +191,7 @@ i love the [`code`](https://www.apple.com.cn)
 [link](https://www.example.com/my%20great%20page)  
 ### Markdown 图片语法  
 要添加图片，请使用感叹号！，然后在方括号增加代替文本，图片的链接放在圆括号中，括号的链接后可以增加一个可选的图片标题文本<br>
-![这是我宝贝](img/.jpg "BB")
+![这是我宝贝](img/1.jpg "BB")
 #### 链接图片
 要给图片增加链接，使用链接的方法即可，将图像的markdown括在方括号中，然后将链接加的圆括号中
 [![这是我宝贝](img/.jpg "宝贝")](https://www.apple.com.cn)  
